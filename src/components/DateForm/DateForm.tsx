@@ -52,13 +52,13 @@ const DateForm = () => {
         <div>
           <DateInput
             className={styles.date}
-            value={new Date()}
+            value={startDate}
             onChange={handleStartDateChange}
             max={endDate}
           />
           <DateInput
             className={styles.date}
-            value={new Date()}
+            value={endDate}
             onChange={handleEndDateChange}
             min={startDate}
           />
