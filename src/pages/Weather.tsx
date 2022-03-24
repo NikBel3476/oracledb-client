@@ -12,8 +12,8 @@ const Weather = () => {
       <DateForm setWeatherInfo={(days: any) => setWeatherInfo(days)} />
       <ul>
         {weatherInfo.map((day: any) => (
-          <li>
-            Дата: {day.datetime} Направление: {day.winddir} Скорость:{" "}
+          <li key={day.datetime}>
+            Дата: {day.datetime} Направление: {day.winddir} Скорость:
             {day.windspeed} Порывы: {day.windgust}
           </li>
         ))}
