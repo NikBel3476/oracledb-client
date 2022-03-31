@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import DateForm from "../components/DateForm";
+import DateForm from "../../components/DateForm";
 
 import styles from "./Weather.module.css";
 

@@ -1,18 +1,19 @@
-import React, { useEffect } from "react";
-import { useTypesSelector } from "../../hooks/useTypesSelector";
-import { useActions } from "../../hooks/useActions";
+import React, { useState } from "react";
+import { cityAPI } from "../../services/CityService";
 
 const CitiesList = () => {
-  const { cities, loading, error, page, limit } = useTypesSelector(
-    (state) => state.city
-  );
-  const { fetchCities } = useActions();
+  const [limit, setLimit] = useState<number>(5);
+  const [page, setPage] = useState<number>(1);
+  const {
+    data: cities,
+    error,
+    isLoading,
+  } = cityAPI.useFetchAllCitiesQuery({ limit, page });
+  const [createCity, {}] = cityAPI.useCreateCityMutation();
+  const [deleteCity, {}] = cityAPI.useDeleteCityMutation();
+  const [updateCity, {}] = cityAPI.useUpdateCityMutation();
 
-  useEffect(() => {
-    fetchCities();
-  }, [page, limit]);
-
-  if (loading) {
+  if (isLoading) {
     return <h1>Загрузка...</h1>;
   }
 
@@ -22,9 +23,7 @@ const CitiesList = () => {
 
   return (
     <div>
-      {cities.map((city) => (
-        <div key={city.id}>{city.name}</div>
-      ))}
+      {cities && cities.map((city) => <div key={city.id}>{city.name}</div>)}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 
 type InputProps = {
   className?: string;
@@ -8,7 +8,7 @@ type InputProps = {
   max?: Date;
 };
 
-const DateInput: FC<InputProps> = ({
+const DateInput: React.FC<InputProps> = ({
   className,
   value,
   onChange,
