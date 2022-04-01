@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { ICity } from "../Models/City";
+import { ICity } from "../../Models/ICity";
+import { CONFIG } from "../../http/config";
 
 export const cityAPI = createApi({
   reducerPath: "cityAPI",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${CONFIG.API_URL}/api` }),
   tagTypes: ["City"],
   endpoints: (build) => ({
     fetchAllCities: build.query<

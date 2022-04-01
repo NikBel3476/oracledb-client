@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { cityAPI } from "../../services/CityService";
+import React, { useEffect, useState } from "react";
+import { cityAPI } from "../../store/API/CityAPI";
 
 const CitiesList = () => {
   const [limit, setLimit] = useState<number>(5);
@@ -12,6 +12,12 @@ const CitiesList = () => {
   const [createCity, {}] = cityAPI.useCreateCityMutation();
   const [deleteCity, {}] = cityAPI.useDeleteCityMutation();
   const [updateCity, {}] = cityAPI.useUpdateCityMutation();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLimit(5);
+    }, 2000);
+  }, []);
 
   if (isLoading) {
     return <h1>Загрузка...</h1>;

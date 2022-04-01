@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
 import DateInput from "../DateInput";
 import styles from "./DateForm.module.css";
-import { getWindStats } from "../../http/weatherAPI";
-import { cityAPI } from "../../services/CityService";
+import { getWindInfo } from "../../http/weatherAPI";
+import { cityAPI } from "../../store/API/CityAPI";
 
 type dateFormProps = {
-  setWeatherInfo: (days: any) => void;
+  onSubmit: (city: string, startDate: Date, endDate: Date) => void;
 };
 
-const DateForm: React.FC<dateFormProps> = ({ setWeatherInfo }) => {
+const DateForm: React.FC<dateFormProps> = ({ onSubmit }) => {
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
-  const [currentCityName, setCurrentCityName] = useState<string>("");
+  const [currentCity, setCurrentCity] = useState<string>("");
 
   const { data: cities, error, isLoading } = cityAPI.useFetchAllCitiesQuery();
 
   useEffect(() => {
-    if (cities) setCurrentCityName(cities[0].name);
+    if (cities) setCurrentCity(cities[0].name);
   }, [cities]);
 
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,16 +29,17 @@ const DateForm: React.FC<dateFormProps> = ({ setWeatherInfo }) => {
 
   const onDateFormSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
-    if (currentCityName) {
-      const res = await getWindStats(currentCityName, startDate, endDate);
-      setWeatherInfo(res.data.days);
+    if (currentCity) {
+      /*const res = await getWindInfo(currentCity, startDate, endDate);
+      setWeatherInfo(res.data.days);*/
+      onSubmit(currentCity, startDate, endDate);
     } else {
       throw new Error("Error with city name");
     }
   };
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (cities) setCurrentCityName(cities[e.target.selectedIndex].name);
+    if (cities) setCurrentCity(cities[e.target.selectedIndex].name);
   };
 
   return (
@@ -55,6 +56,7 @@ const DateForm: React.FC<dateFormProps> = ({ setWeatherInfo }) => {
           value={endDate}
           onChange={handleEndDateChange}
           min={startDate}
+          max={new Date()}
         />
       </div>
       <select
