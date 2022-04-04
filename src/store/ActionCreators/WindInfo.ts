@@ -10,6 +10,6 @@ export const fetchWindInfo = createAsyncThunk<
     const response = await getWindInfo(city, startDate, endDate);
     return response.data.days;
   } catch (e) {
-    return thunkAPI.rejectWithValue("Ошибка при загрузке данных о ветре");
+    return thunkAPI.rejectWithValue("Ошибка загрузки данных о ветре");
   }
 });

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DateInput from "../DateInput";
 import styles from "./DateForm.module.css";
-import { getWindInfo } from "../../http/weatherAPI";
 import { cityAPI } from "../../store/API/CityAPI";
 
 type dateFormProps = {
@@ -9,8 +8,9 @@ type dateFormProps = {
 };
 
 const DateForm: React.FC<dateFormProps> = ({ onSubmit }) => {
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [endDate, setEndDate] = useState<Date>(new Date());
+  const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
+  const [startDate, setStartDate] = useState<Date>(yesterday);
+  const [endDate, setEndDate] = useState<Date>(yesterday);
   const [currentCity, setCurrentCity] = useState<string>("");
 
   const { data: cities, error, isLoading } = cityAPI.useFetchAllCitiesQuery();
@@ -34,7 +34,7 @@ const DateForm: React.FC<dateFormProps> = ({ onSubmit }) => {
       setWeatherInfo(res.data.days);*/
       onSubmit(currentCity, startDate, endDate);
     } else {
-      throw new Error("Error with city name");
+      throw new Error("Error with selected city name");
     }
   };
 
@@ -56,16 +56,22 @@ const DateForm: React.FC<dateFormProps> = ({ onSubmit }) => {
           value={endDate}
           onChange={handleEndDateChange}
           min={startDate}
-          max={new Date()}
+          max={yesterday}
         />
       </div>
-      <select
-        className={styles.citiesList}
-        onChange={(e) => handleSelectChange(e)}
-      >
-        {cities &&
-          cities.map((city) => <option key={city.id}>{city.name}</option>)}
-      </select>
+      {isLoading ? (
+        <h3>Загрузка...</h3>
+      ) : error ? (
+        <h3>Ошибка загрузки городов</h3>
+      ) : (
+        <select
+          className={styles.citiesList}
+          onChange={(e) => handleSelectChange(e)}
+        >
+          {cities &&
+            cities.map((city) => <option key={city.id}>{city.name}</option>)}
+        </select>
+      )}
       <button
         className={styles.submit}
         type={"submit"}

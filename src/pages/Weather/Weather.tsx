@@ -21,9 +21,9 @@ const Weather = () => {
       <h1>Информация о ветре</h1>
       <DateForm onSubmit={getWindInfo} />
       {isLoading ? (
-        <h1>Загрузка...</h1>
+        <h3>Загрузка...</h3>
       ) : error ? (
-        <h1>{error}</h1>
+        <h3>{error}</h3>
       ) : (
         <ul>
           {days.map((day: any) => (
