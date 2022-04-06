@@ -1,11 +1,12 @@
+import moment from "moment";
 import { $weather } from "./index";
 import { IWindInfo } from "../Models/IWindInfo";
 
 const getWindInfo = async (city: string, start: Date, end: Date) => {
-  const startISO = start.toISOString().split("T")[0];
-  const endISO = end.toISOString().split("T")[0];
+  const startDateISO = moment(start).format("yyyy-MM-DDTHH:mm");
+  const endDateISO = moment(end).format("yyyy-MM-DDTHH:mm");
   const data = await $weather.get<{ days: IWindInfo[] }>(
-    `${city}/${startISO}/${endISO}`
+    `${city}/${startDateISO}/${endDateISO}`
   );
   return data;
 };

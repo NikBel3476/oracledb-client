@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import DateInput from "../DateInput";
+import moment from "moment";
+import DatetimeInput from "../DatetimeInput";
 import styles from "./DateForm.module.css";
 import { cityAPI } from "../../store/API/CityAPI";
 
@@ -8,9 +9,26 @@ type dateFormProps = {
 };
 
 const DateForm: React.FC<dateFormProps> = ({ onSubmit }) => {
-  const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
-  const [startDate, setStartDate] = useState<Date>(yesterday);
-  const [endDate, setEndDate] = useState<Date>(yesterday);
+  const maxDate = moment().subtract(1, "days").hours(23).minutes(0).toDate();
+
+  const [startDate, setStartDate] = useState<Date>(
+    moment()
+      .subtract(1, "days")
+      .hours(0)
+      .minutes(0)
+      .seconds(0)
+      .millisecond(0)
+      .toDate()
+  );
+  const [endDate, setEndDate] = useState<Date>(
+    moment()
+      .subtract(1, "days")
+      .hours(23)
+      .minutes(0)
+      .seconds(0)
+      .millisecond(0)
+      .toDate()
+  );
   const [currentCity, setCurrentCity] = useState<string>("");
 
   const { data: cities, error, isLoading } = cityAPI.useFetchAllCitiesQuery();
@@ -20,18 +38,26 @@ const DateForm: React.FC<dateFormProps> = ({ onSubmit }) => {
   }, [cities]);
 
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStartDate(new Date(e.target.value));
+    const newStartDate = moment(e.target.value).minutes(0).toDate();
+    if (newStartDate.getTime() <= endDate.getTime()) {
+      setStartDate(newStartDate);
+    } else {
+      alert("Дата начала должна быть не больше даты окончания");
+    }
   };
 
   const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEndDate(new Date(e.target.value));
+    const newEndDate = moment(e.target.value).minutes(0).toDate();
+    if (newEndDate >= startDate) {
+      setEndDate(newEndDate);
+    } else {
+      alert("Дата окончания должна быть не меньше даты начала");
+    }
   };
 
   const onDateFormSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (currentCity) {
-      /*const res = await getWindInfo(currentCity, startDate, endDate);
-      setWeatherInfo(res.data.days);*/
       onSubmit(currentCity, startDate, endDate);
     } else {
       throw new Error("Error with selected city name");
@@ -45,18 +71,20 @@ const DateForm: React.FC<dateFormProps> = ({ onSubmit }) => {
   return (
     <form className={styles.form}>
       <div>
-        <DateInput
+        <DatetimeInput
           className={styles.date}
           value={startDate}
           onChange={handleStartDateChange}
           max={endDate}
+          required={true}
         />
-        <DateInput
+        <DatetimeInput
           className={styles.date}
           value={endDate}
           onChange={handleEndDateChange}
           min={startDate}
-          max={yesterday}
+          max={maxDate}
+          required={true}
         />
       </div>
       {isLoading ? (
@@ -75,7 +103,7 @@ const DateForm: React.FC<dateFormProps> = ({ onSubmit }) => {
       <button
         className={styles.submit}
         type={"submit"}
-        onClick={(e) => onDateFormSubmit(e)}
+        onClick={onDateFormSubmit}
       >
         Подтвердить
       </button>
