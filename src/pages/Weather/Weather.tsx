@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DateForm from "../../components/DateForm";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import styles from "./Weather.module.css";
@@ -26,10 +26,10 @@ const Weather = () => {
         <h3>{error}</h3>
       ) : (
         <ul>
-          {days.map((day: any) => (
+          {days.map((day) => (
             <li key={day.datetime}>
-              Дата: {day.datetime} Направление: {day.winddir} Скорость:
-              {day.windspeed} Порывы: {day.windgust}
+              Дата: {day.datetime} Направление: {day.windDirection} Скорость:
+              {day.windSpeed} Порывы: {day.windGust}
             </li>
           ))}
         </ul>
