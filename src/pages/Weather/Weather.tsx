@@ -1,20 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DateForm from "../../components/DateForm";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import styles from "./Weather.module.css";
 import { fetchWindInfo } from "../../store/ActionCreators/WindInfo";
+import WindRose from "../../components/WindRose/WindRose";
 
 const Weather = () => {
-  const [weatherInfo, setWeatherInfo] = useState<any>([]); // TODO: delete any type
-
   const dispatch = useAppDispatch();
-  const { days, isLoading, error } = useAppSelector(
+  const { windRoseDirections, isLoading, error } = useAppSelector(
     (state) => state.windInfoReducer
   );
 
   const getWindInfo = (city: string, startDate: Date, endDate: Date) => {
     dispatch(fetchWindInfo({ city, startDate, endDate }));
   };
+
+  const [windHoursAmountData, setWindHoursAmountData] = useState<number[]>([]);
+  const [labels, setLabels] = useState<string[]>([]);
+
+  useEffect(() => {
+    setWindHoursAmountData(windRoseDirections.map((dir) => dir.hoursAmount));
+    setLabels(windRoseDirections.map((dir) => dir.cardinalDirection));
+  }, [windRoseDirections]);
 
   return (
     <div className={styles.container}>
@@ -25,14 +32,14 @@ const Weather = () => {
       ) : error ? (
         <h3>{error}</h3>
       ) : (
-        <ul>
-          {days.map((day) => (
-            <li key={day.datetime}>
-              Дата: {day.datetime} Направление: {day.windDirection} Скорость:
-              {day.windSpeed} Порывы: {day.windGust}
-            </li>
-          ))}
-        </ul>
+        windRoseDirections?.length > 0 && (
+          <WindRose
+            values={{
+              labels,
+              dataset: windHoursAmountData,
+            }}
+          />
+        )
       )}
     </div>
   );

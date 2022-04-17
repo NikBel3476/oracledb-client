@@ -5,9 +5,14 @@
   align-items: center;
 }
 
-.date {
-  margin-right: 10px;
-  margin-left: 10px;
+.inputs__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.input__datetime {
+  margin: 5px 10px;
 }
 
 .submit {

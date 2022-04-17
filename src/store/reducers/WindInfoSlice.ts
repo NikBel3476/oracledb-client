@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IWindInfo } from "../../Models/IWindInfo";
 import { fetchWindInfo } from "../ActionCreators/WindInfo";
+import { WindRoseDirectionInfo } from "../../Models/WindRoseDirection";
 
 interface WindInfoState {
-  days: IWindInfo[];
+  windRoseDirections: WindRoseDirectionInfo[];
   isLoading: boolean;
   error: string;
 }
 
 const initialState: WindInfoState = {
-  days: [],
+  windRoseDirections: [],
   isLoading: false,
   error: "",
 };
@@ -24,9 +24,9 @@ export const windInfoSlice = createSlice({
     },
     [fetchWindInfo.fulfilled.type]: (
       state,
-      action: PayloadAction<IWindInfo[]>
+      action: PayloadAction<WindRoseDirectionInfo[]>
     ) => {
-      state.days = action.payload;
+      state.windRoseDirections = action.payload;
       state.isLoading = false;
       state.error = "";
     },

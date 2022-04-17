@@ -70,16 +70,16 @@ const DateForm: React.FC<dateFormProps> = ({ onSubmit }) => {
 
   return (
     <form className={styles.form}>
-      <div>
+      <div className={styles.inputs__wrapper}>
         <DatetimeInput
-          className={styles.date}
+          className={styles.input__datetime}
           value={startDate}
           onChange={handleStartDateChange}
           max={endDate}
           required={true}
         />
         <DatetimeInput
-          className={styles.date}
+          className={styles.input__datetime}
           value={endDate}
           onChange={handleEndDateChange}
           min={startDate}
