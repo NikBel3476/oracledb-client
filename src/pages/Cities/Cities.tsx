@@ -1,7 +1,6 @@
 import React from "react";
 import CitiesList from "../../components/CitiesList";
 import AddCityForm from "../../components/CreateCityForm";
-
 import styles from "./Cities.module.css";
 
 const Cities = () => {
