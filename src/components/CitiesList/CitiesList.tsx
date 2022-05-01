@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { cityAPI } from "../../store/API/CityAPI";
+import {
+  useDeleteCityMutation,
+  useGetCitiesQuery,
+  useUpdateCityMutation,
+} from "../../store/API/CityAPI";
+import styles from "./CitiesList.module.css";
 
 const CitiesList = () => {
   const [limit, setLimit] = useState<number>(5);
   const [page, setPage] = useState<number>(1);
-  const {
-    data: cities,
-    error,
-    isLoading,
-  } = cityAPI.useFetchAllCitiesQuery({ limit, page });
-  const [createCity, {}] = cityAPI.useCreateCityMutation();
-  const [deleteCity, {}] = cityAPI.useDeleteCityMutation();
-  const [updateCity, {}] = cityAPI.useUpdateCityMutation();
+  const { data: cities, error, isLoading } = useGetCitiesQuery({ limit, page });
+  const [deleteCity, {}] = useDeleteCityMutation();
+  const [updateCity, {}] = useUpdateCityMutation();
 
   useEffect(() => {
     setTimeout(() => {
@@ -29,7 +29,12 @@ const CitiesList = () => {
 
   return (
     <div>
-      {cities && cities.map((city) => <div key={city.id}>{city.name}</div>)}
+      {cities &&
+        cities.map((city) => (
+          <div className={styles.city_wrapper} key={city.id}>
+            <span>{city.name}</span>
+          </div>
+        ))}
     </div>
   );
 };

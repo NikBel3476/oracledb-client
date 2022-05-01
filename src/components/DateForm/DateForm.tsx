@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import DatetimeInput from "../DatetimeInput";
 import styles from "./DateForm.module.css";
-import { cityAPI } from "../../store/API/CityAPI";
+import { useGetCitiesQuery } from "../../store/API/CityAPI";
 
 type dateFormProps = {
   onSubmit: (city: string, startDate: Date, endDate: Date) => void;
@@ -31,7 +31,7 @@ const DateForm: React.FC<dateFormProps> = ({ onSubmit }) => {
   );
   const [currentCity, setCurrentCity] = useState<string>("");
 
-  const { data: cities, error, isLoading } = cityAPI.useFetchAllCitiesQuery();
+  const { data: cities, error, isLoading } = useGetCitiesQuery();
 
   useEffect(() => {
     if (cities) setCurrentCity(cities[0].name);

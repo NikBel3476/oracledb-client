@@ -1,12 +1,24 @@
-import React from "react";
-
-import styles from "./AddCityForm.module.css";
+import React, { useRef } from "react";
+import { useCreateCityMutation } from "../../store/API/CityAPI";
 
 const AddCityForm = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [createCity] = useCreateCityMutation();
+
+  const onSubmit = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (inputRef.current) {
+      await createCity(inputRef.current.value);
+    }
+  };
+
   return (
     <form>
-      <input type="text" />
-      <button type="submit">Добавить город</button>
+      <h2>Добавление города</h2>
+      <input ref={inputRef} type="text" placeholder="Город" />
+      <button type="submit" onClick={(e) => onSubmit(e)}>
+        Добавить
+      </button>
     </form>
   );
 };

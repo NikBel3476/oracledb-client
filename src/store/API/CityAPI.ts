@@ -7,10 +7,7 @@ export const cityAPI = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${CONFIG.API_URL}/api` }),
   tagTypes: ["City"],
   endpoints: (build) => ({
-    fetchAllCities: build.query<
-      ICity[],
-      { page: number; limit: number } | void
-    >({
+    getCities: build.query<ICity[], { page: number; limit: number } | void>({
       query: (queryParams) => ({
         url: "/cities",
         params: {
@@ -19,15 +16,15 @@ export const cityAPI = createApi({
       }),
       providesTags: (result) => ["City"],
     }),
-    createCity: build.mutation({
-      query: (city) => ({
+    createCity: build.mutation<ICity, string>({
+      query: (cityName) => ({
         url: "/cities",
         method: "POST",
-        body: city,
+        body: { name: cityName },
       }),
       invalidatesTags: ["City"],
     }),
-    updateCity: build.mutation({
+    updateCity: build.mutation<ICity, ICity>({
       query: (city) => ({
         url: `/cities/${city.id}`,
         method: "PUT",
@@ -35,13 +32,19 @@ export const cityAPI = createApi({
       }),
       invalidatesTags: ["City"],
     }),
-    deleteCity: build.mutation({
-      query: (city) => ({
-        url: `/cities/${city.id}`,
+    deleteCity: build.mutation<ICity, number>({
+      query: (cityId) => ({
+        url: `/cities/${cityId}`,
         method: "DELETE",
-        body: city,
       }),
       invalidatesTags: ["City"],
     }),
   }),
 });
+
+export const {
+  useGetCitiesQuery,
+  useCreateCityMutation,
+  useDeleteCityMutation,
+  useUpdateCityMutation,
+} = cityAPI;
