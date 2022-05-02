@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   useDeleteCityMutation,
   useGetCitiesQuery,
+  useUpdateCityMutation,
 } from "../../store/API/CityAPI";
 import styles from "./CitiesList.module.css";
 import CityModal from "../CityModal";
@@ -14,12 +15,8 @@ const CitiesList = () => {
   const [visibleCityModal, setVisibleCityModal] = useState<boolean>(false);
 
   const { data: cities, error, isLoading } = useGetCitiesQuery({ limit, page });
+  const [updateCity] = useUpdateCityMutation();
   const [deleteCity] = useDeleteCityMutation();
-
-  const onCityModalSubmit = () => {
-    alert("city updated");
-    setVisibleCityModal(false);
-  };
 
   const handleCityDelete = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -32,6 +29,11 @@ const CitiesList = () => {
   const handleCityItemClick = (e: React.MouseEvent, city: ICity) => {
     setCurrentCity(city);
     setVisibleCityModal(true);
+  };
+
+  const onCityModalSubmit = (city: ICity) => {
+    updateCity(city);
+    setVisibleCityModal(false);
   };
 
   if (isLoading) {

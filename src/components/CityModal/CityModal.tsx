@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./CityModal.module.css";
 import { ICity } from "../../Models/ICity";
@@ -6,9 +6,9 @@ import { ICity } from "../../Models/ICity";
 const cx = classNames.bind(styles);
 
 type CityModelProps = {
-  inputValue?: Omit<ICity, "id">;
+  inputValue?: ICity;
   show: boolean;
-  onSubmit: () => void;
+  onSubmit: (city: ICity) => void;
 };
 
 const CityModal: React.FC<CityModelProps> = ({
@@ -19,6 +19,10 @@ const CityModal: React.FC<CityModelProps> = ({
   const [newCityName, setNewCityName] = useState<string>(
     inputValue?.name || ""
   );
+
+  useEffect(() => {
+    setNewCityName(inputValue?.name || "");
+  }, [inputValue]);
 
   const handleFormClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -32,7 +36,12 @@ const CityModal: React.FC<CityModelProps> = ({
 
   const handleFormSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
-    onSubmit();
+    if (inputValue) {
+      onSubmit({
+        ...inputValue,
+        name: newCityName,
+      });
+    }
   };
 
   return (
