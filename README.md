@@ -1,13 +1,30 @@
-### Client side
+### Клиентская часть приложения для вычисления розы ветров
 
-**[Server side](https://github.com/NikBel3476/oracledb-server)**
+**[Серверная часть](https://github.com/NikBel3476/oracledb-server)**
 
-##### To run client
-1) Install dependencies if you are running the application at the first time
+### Необходимые программы и компоненты для работы приложения:
+1. Среда для запуска javascript - Node.js  
+   [Ссылка для загрузки Node.js](https://nodejs.org)
 
-   `npm start`
-2) Launch the application in developer mode
+##### Порядок действий для запуска приложения
+1. Скопировать git репозиторий (при установленном Git)
+   ```shell
+   git clone https://github.com/NikBel3476/oracledb-server.git
+   ```  
+   Папка репозитория появится в дериктории, которая является текущей в терминале.  
+   Если Git не установлен, то необходимо скачать репозиторий в виде zip архива,
+   затем распаковать его, открыть распакованную директорию в терминале и перейти к пункту 3
+2. Перейти в папку с репозиторием
+   ```shell
+   cd oracledb-client
+   ```
+3. Установить необходимые зависимости приложения 
+   ```shell
+   npm start
+   ```
+4. Запустить приложение
+   ```shell
+   npm run start
+   ```
 
-   `npm run start`
-
-Application will start at `http://localhost:3000`, you can open it in browser
+Приложение будет запущено по адресу `http://localhost:3000`, вы можете открыть его в браузере
