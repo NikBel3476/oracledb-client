@@ -38,11 +38,11 @@ const DateForm: React.FC<dateFormProps> = ({ onSubmit }) => {
 	}, [cities]);
 
 	const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setStartDate(moment(e.target.value).minutes(0).toDate());
+		setStartDate(moment(e.target.value).hours(0).toDate());
 	};
 
 	const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setEndDate(moment(e.target.value).minutes(0).toDate());
+		setEndDate(moment(e.target.value).hours(23).toDate());
 	};
 
 	const onDateFormSubmit = async (e: React.MouseEvent) => {

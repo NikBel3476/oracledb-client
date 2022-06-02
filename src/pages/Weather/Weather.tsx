@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import styles from "./Weather.module.css";
 import { fetchWindInfo } from "../../store/ActionCreators/WindInfo";
 import WindRose from "../../components/WindRose/WindRose";
+import moment from "moment";
 
 const Weather = () => {
 	const dispatch = useAppDispatch();
@@ -37,12 +38,32 @@ const Weather = () => {
 				<h3>{error}</h3>
 			) : (
 				windRoseDirections.windRoseStats.length > 0 && (
-					<WindRose
-						values={{
-							labels,
-							dataset: windHoursAmountData,
-						}}
-					/>
+					<div className={styles.wind_rose__wrapper}>
+						<WindRose
+							values={{
+								labels,
+								dataset: windHoursAmountData,
+							}}
+						/>
+						<div className={styles.dates__wind_rose__wrapper}>
+							<span className={styles.start_date__wind_rose}>
+								Дата начала:{" "}
+								{moment(windRoseDirections.startDate).format("DD.MM.YYYY")}
+							</span>
+							<span className={styles.start_date__wind_rose}>
+								Дата окончания:{" "}
+								{moment(windRoseDirections.endDate).format("DD.MM.YYYY")}
+							</span>
+						</div>
+						{windRoseDirections.errors.length > 0 && (
+							<div>
+								<h3>Ошибки</h3>
+								{windRoseDirections.errors.map((e) => (
+									<p>{e}</p>
+								))}
+							</div>
+						)}
+					</div>
 				)
 			)}
 		</div>

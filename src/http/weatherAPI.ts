@@ -10,7 +10,9 @@ const getWindInfo = async (city: string, startDate: Date, endDate: Date) => {
 		startDate?: string;
 		endDate?: string;
 		errors: string[];
-	}>(`${city}/${startDateString}/${endDateString}`);
+	}>(`${city}/${startDateString}/${endDateString}`, {
+		timeout: 10000,
+	});
 };
 
 export { getWindInfo };
